@@ -113,7 +113,7 @@ def var_iter(data, target_col, max_bins):
     return woe_iv, pd.DataFrame(remarks_list)
 
 # after getting woe and iv for all classes of features calculate aggregated IV values for features.
-def get_iv_woe(data, target_col, max_bins, fill_by_woe=False, woe_var_list=[]):
+def get_iv_woe(data, target_col, max_bins):
     func_start_time = time.time()
     woe_iv, binning_remarks = var_iter(data, target_col, max_bins)
     print("------------------IV and WOE calculated for individual groups.------------------")
