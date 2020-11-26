@@ -48,6 +48,7 @@ def iv_woe_4iter(binned_data, target_col, class_col):
         temp_groupby = binned_data.groupby(class_col).agg({class_col.replace("_bins", ""):["min", "max"],
                                                            target_col: ["count", "sum", "mean"]}).reset_index()
     else:
+        binned_data[class_col] = binned_data[class_col].fillna("Missing")
         temp_groupby = binned_data.groupby(class_col).agg({class_col:["first", "first"],
                                                            target_col: ["count", "sum", "mean"]}).reset_index()
     
@@ -70,17 +71,13 @@ def iv_woe_4iter(binned_data, target_col, class_col):
     
     """
     **********get distribution of good and bad
-    Note: distribution formulae is adjusted for classes where good_count or bad_count is 0.
     """
-    temp_groupby["non_event_count"] = temp_groupby["non_event_count"].replace({0: 0.001})
-    temp_groupby["event_count"] = temp_groupby["event_count"].replace({0: 0.001})
     temp_groupby['distbn_non_event'] = temp_groupby["non_event_count"]/temp_groupby["non_event_count"].sum()
     temp_groupby['distbn_event'] = temp_groupby["event_count"]/temp_groupby["event_count"].sum()
-    temp_groupby["non_event_count"] = temp_groupby["non_event_count"].replace({0.001: 0})
-    temp_groupby["event_count"] = temp_groupby["event_count"].replace({0.001: 0})
 
     temp_groupby['woe'] = np.log(temp_groupby['distbn_non_event'] / temp_groupby['distbn_event'])
     temp_groupby['iv'] = (temp_groupby['distbn_non_event'] - temp_groupby['distbn_event']) * temp_groupby['woe']
+    temp_groupby = temp_groupby.replace([np.inf,-np.inf],0)
     
     return temp_groupby
 
@@ -135,6 +132,7 @@ def get_iv_woe(data, target_col, max_bins):
     print("------------------Null percent calculated in features.------------------")
     print("Total time elapsed: {} minutes".format(round((time.time() - func_start_time) / 60, 3)))
     iv = iv.merge(binning_remarks, on="feature", how="left")
+    woe_iv = woe_iv.merge(iv[["feature", "iv", "remarks"]].rename(columns={"iv": "iv_sum"}), on="feature", how="left")
     print("------------------Binning remarks added and process is complete.------------------")
     print("Total time elapsed: {} minutes".format(round((time.time() - func_start_time) / 60, 3)))
     return iv, woe_iv.replace({"Missing": np.nan})
