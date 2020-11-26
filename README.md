@@ -15,7 +15,7 @@ print(data.shape)
 iv, woe_iv = get_iv_woe(data.copy(), target_col="bad_customer", max_bins=20)
 print(iv.shape, woe_iv.shape)
 ```
-**Note** : Make sure dtype of continuous columns in dataframe is not object. Because it will consider it as categorical and binning won't be done for that column. <br>
+**Note** : Make sure dtype of continuous columns in dataframe is not object. Because it will consider it as categorical and binning won't be done for that column. <br><br>
 Where,
 * **iv** DataFrame contains aggregated information values corresponding to every independent feature and some additional information like: binning technique used for feature and null percentage.
 * **woe_iv** DataFrame contains bins, their corresponding distributions, WOE and IV values.
