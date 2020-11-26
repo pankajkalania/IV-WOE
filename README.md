@@ -12,6 +12,9 @@ print(data.shape)
 **Step-2 :** Call function get_iv_woe() in iv_woe_code.py to get IV and WOE values.
 
 ```{python}
-iv, woe_iv = get_iv_woe(data.copy(), "bad_customer", 20)
+iv, woe_iv = get_iv_woe(data.copy(), target_col="bad_customer", max_bins=20)
 print(iv.shape, woe_iv.shape)
 ```
+Where,
+* iv DataFrame contains aggregated information values corresponding to every independent feature and some additional information like: binning technique used for feature and null percentage.
+* woe_iv DataFrame contains bins their corresponding distributions, WOE and IV values.
