@@ -17,4 +17,4 @@ print(iv.shape, woe_iv.shape)
 ```
 Where,
 * iv DataFrame contains aggregated information values corresponding to every independent feature and some additional information like: binning technique used for feature and null percentage.
-* woe_iv DataFrame contains bins their corresponding distributions, WOE and IV values.
+* woe_iv DataFrame contains bins, their corresponding distributions, WOE and IV values.
