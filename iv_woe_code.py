@@ -77,7 +77,9 @@ def iv_woe_4iter(binned_data, target_col, class_col):
 
     temp_groupby['woe'] = np.log(temp_groupby['distbn_non_event'] / temp_groupby['distbn_event'])
     temp_groupby['iv'] = (temp_groupby['distbn_non_event'] - temp_groupby['distbn_event']) * temp_groupby['woe']
-    temp_groupby = temp_groupby.replace([np.inf,-np.inf],0)
+    
+    temp_groupby["woe"] = temp_groupby["woe"].replace([np.inf,-np.inf],0)
+    temp_groupby["iv"] = temp_groupby["iv"].replace([np.inf,-np.inf],0)
     
     return temp_groupby
 
